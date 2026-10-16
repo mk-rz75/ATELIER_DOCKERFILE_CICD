@@ -87,6 +87,19 @@ jobs:
     needs: Docker
     environment: production
     steps:
-      - name: A compléter
-        run: |
-          echo "Écrire ici la simulation de mise en production"
+      - name: Récupérer l'image
+        uses: actions/download-artifact@v4
+        with:
+          name: image-docker
+
+      - name: Charger l'image
+        run: docker load -i image.tar
+
+      - name: Démarrer le conteneur
+        run: docker run -d -p 4000:4000 --name app $IMAGE_NAME
+
+      - name: Vérifier que l'application répond
+        run: curl --fail --retry 10 --retry-connrefused --retry-delay 2 http://localhost:4000
+
+      - name: Résumé
+        run: echo "### ✅ Application mise en production" >> $GITHUB_STEP_SUMMARY
