@@ -1,2 +1,3 @@
 # Dont upload temporary Markdown writeups 
 .writeup.md
+__pycache__/
