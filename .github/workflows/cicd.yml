@@ -22,9 +22,19 @@ jobs:
   Tests:
     runs-on: ubuntu-latest
     steps:
-      - name: A compléter
-        run: |
-          echo "Écrire ici les étapes de test de l'application"
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Installer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt pytest
+
+      - name: Lancer les tests
+        run: pytest -v tests/
 
   # ---------------------------------------------------------------
   # JOB 2 - Livraison continue : construire l'image Docker
